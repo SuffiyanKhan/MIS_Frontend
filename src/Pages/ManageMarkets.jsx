@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
     Box,
     Button,
@@ -23,6 +23,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import BasicBreadcrumbs from "../Components/BasicBreadcrumbs/BasicBreadcrumbs";
+import { getAllMarketsDataServices } from "../Services/market.services";
+import { getAllStoresDataServices } from "../Services/stores.services";
 
 function ManageMarkets() {
     const [markets, setMarkets] = useState([]);
@@ -73,17 +75,126 @@ function ManageMarkets() {
             storeManagers: 12,
         },
     ];
+    // const fetchMarkets = useCallback(async () => {
+    //     setLoading(true);
+    //     try {
+    //         await new Promise((resolve) => setTimeout(resolve, 800)); // simulate API delay
+    //         const response = await getAllMarketsDataServices();
+    //         if (response?.status === 200) {
+    //             console.log(response.data);
+    //             setMarkets(response.data);
+    //             setFilteredMarkets(response.data);
+    //         } else {
+    //             setMarkets(dummyStores);
+    //             setFilteredMarkets(dummyStores);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error fetching stores:", error);
+    //         setMarkets(dummyStores);
+    //         setFilteredMarkets(dummyStores);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }, []);
+    //     const fetchMarkets = useCallback(async () => {
+    //         setLoading(true);
+    //         try {
+    //             await new Promise((resolve) => setTimeout(resolve, 800)); // simulate API delay
 
+    //             // 🔹 Fetch all stores data (each store should have a market name in it)
+    //             const response = await getAllStoresDataServices();
+    //  const storesData = await getAllMarketsDataServices();
+    //             if (response?.status === 200 && Array.isArray(response.data)) {
+    //                 const allStores = response.data;
 
-    // Fetch markets
-    const fetchMarkets = () => {
+    //                 // 🔹 Aggregate: count stores per market
+    //                 const marketMap = {};
+    //                 allStores.forEach((store) => {
+    //                     const marketName = store.market?.trim() || "Unknown";
+    //                     if (!marketMap[marketName]) {
+    //                         marketMap[marketName] = {
+    //                             id: Object.keys(marketMap).length + 1,
+    //                             name: marketName,
+    //                             stores: 0,
+    //                             marketManager: "—", // placeholder (can be updated later)
+    //                             districtManagers: 0,
+    //                             totalEmployees: 0,
+    //                             storeManagers: 0,
+    //                         };
+    //                     }
+    //                     marketMap[marketName].stores += 1;
+    //                 });
+
+    //                 // 🔹 Convert map to array
+    //                 const aggregatedMarkets = Object.values(marketMap);
+
+    //                 setMarkets(aggregatedMarkets);
+    //                 setFilteredMarkets(aggregatedMarkets);
+    //             } else {
+    //                 console.warn("Fallback to dummy data");
+    //                 setMarkets(dummyMarkets);
+    //                 setFilteredMarkets(dummyMarkets);
+    //             }
+    //         } catch (error) {
+    //             console.error("Error fetching stores:", error);
+    //             setMarkets(dummyMarkets);
+    //             setFilteredMarkets(dummyMarkets);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     }, []);
+    const fetchMarkets = useCallback(async () => {
         setLoading(true);
-        setTimeout(() => {
+        try {
+            await new Promise((resolve) => setTimeout(resolve, 800)); // simulate API delay
+
+            // 🔹 Step 1: Fetch all markets
+            const marketsRes = await getAllMarketsDataServices();
+            // 🔹 Step 2: Fetch all stores
+            const storesRes = await getAllStoresDataServices();
+
+            if (marketsRes?.status === 200 && storesRes?.status === 200) {
+                const marketsData = marketsRes.data || [];
+                const storesData = storesRes.data || [];
+
+                // 🔹 Step 3: Count stores per market name
+                const storeCountByMarket = {};
+                storesData.forEach((store) => {
+                    const marketName =
+                        store.market?.trim().toLowerCase() || "unknown";
+                    storeCountByMarket[marketName] =
+                        (storeCountByMarket[marketName] || 0) + 1;
+                });
+
+                // 🔹 Step 4: Merge count into markets list
+                const mergedMarkets = marketsData.map((market, index) => {
+                    const marketKey = market.name?.trim().toLowerCase();
+                    return {
+                        id: market.id || index + 1,
+                        name: market.name,
+                        marketManager: market.marketManager || "—",
+                        stores: storeCountByMarket[marketKey] || 0, // 👈 Default 0 if none
+                        districtManagers: market.districtManagers || 0,
+                        totalEmployees: market.totalEmployees || 0,
+                        storeManagers: market.storeManagers || 0,
+                    };
+                });
+
+                setMarkets(mergedMarkets);
+                setFilteredMarkets(mergedMarkets);
+            } else {
+                console.warn("Using fallback dummy data");
+                setMarkets(dummyMarkets);
+                setFilteredMarkets(dummyMarkets);
+            }
+        } catch (error) {
+            console.error("Error fetching markets or stores:", error);
             setMarkets(dummyMarkets);
             setFilteredMarkets(dummyMarkets);
+        } finally {
             setLoading(false);
-        }, 800);
-    };
+        }
+    }, []);
 
     useEffect(() => {
         fetchMarkets();
@@ -180,9 +291,18 @@ function ManageMarkets() {
                     <TableBody>
                         {loading ? (
                             <TableRow>
-                                <TableCell colSpan={6} align="center">
-                                    <Box display="flex" justifyContent="center" mt={5}>
-                                        <CircularProgress />
+                                <TableCell colSpan={7} align="center" height={300}>
+                                    <Box
+                                        display="flex"
+                                        flexDirection="column"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        sx={{ py: 5 }}
+                                    >
+                                        <CircularProgress size={50} thickness={5} sx={{ color: "#6f2da8", mb: 2 }} />
+                                        <Typography variant="subtitle1" sx={{ color: "#6f2da8", fontWeight: 500 }}>
+                                            Loading markets data, please wait...
+                                        </Typography>
                                     </Box>
                                 </TableCell>
                             </TableRow>

@@ -29,7 +29,7 @@ import MaintenanceOverview from "../Components/MaintenanceOverview/MaintenanceOv
 // 🧾 Dummy data (your existing one)
 export const DUMMY_STORES = [
     {
-        id: "TECH1255",
+        id: "TECH1006",
         market: "ARIZONA",
         door_code: "70849455",
         store_name: "1255 W MAIN STREET",
@@ -78,7 +78,7 @@ export const DUMMY_STORES = [
         },
     },
     {
-        id: "TECH12801",
+        id: "TECH101",
         market: "ARIZONA",
         door_code: "70848851",
         store_name: "W BELL RD",
@@ -127,7 +127,7 @@ export const DUMMY_STORES = [
         },
     },
     {
-        id: "TECH1326",
+        id: "TECH1010S",
         market: "ARIZONA",
         door_code: "70848853",
         store_name: "E FLORENCE BLVD",
@@ -176,7 +176,7 @@ export const DUMMY_STORES = [
         },
     },
     {
-        id: "TECH13915",
+        id: "TECH1021",
         market: "ARIZONA",
         door_code: "70848850",
         store_name: "N DYSART RD",
@@ -225,7 +225,7 @@ export const DUMMY_STORES = [
         },
     },
     {
-        id: "TECH1954",
+        id: "TECH1029",
         market: "ARIZONA",
         door_code: "70850955",
         store_name: "1954 W BROADWAY RD",

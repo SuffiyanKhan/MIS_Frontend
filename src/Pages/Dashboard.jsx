@@ -23,6 +23,14 @@ import BoltIcon from "@mui/icons-material/Bolt";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import SalesTrendsChart from "../Charts/SalesTrendsChart";
 import TopPerformingStores from "../Charts/TopPerformingStores";
+import StorePerformanceOverview from "../Components/StorePerformanceOverview/StorePerformanceOverview.jsx";
+import LeasingOverviewDashboard from "../Components/LeasingOverviewDashboard/LeasingOverviewDashboard.jsx.jsx";
+import StoreLocationsDashboard from "../Components/StoreLocationsDashboard/StoreLocationsDashboard.jsx";
+import UtilitiesOverviewDashboard from "../Components/UtilitiesOverviewDashboard/UtilitiesOverviewDashboard.jsx";
+import MaintenanceRequestsDashboard from "../Components/MaintenanceRequestsDashboard/MaintenanceRequestsDashboard.jsx";
+import FinancialOverviewDashboard from "../Components/FinancialOverviewDashboard/FinancialOverviewDashboard.jsx";
+import AlertsNotifications from "../Components/AlertsNotifications/AlertsNotifications.jsx";
+import QuickActions from "../Components/QuickActions/QuickActions.jsx";
 
 function Dashboard() {
   return (
@@ -31,7 +39,7 @@ function Dashboard() {
       <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
         <div>
           <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-            📊 MIS Dashboard
+            MIS Dashboard
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
             Overview of Metro by T-Mobile Operations and Store Performance
@@ -94,148 +102,52 @@ function Dashboard() {
           <SalesTrendsChart />
         </div>
         <div className="col-12 col-lg-4">
-          <TopPerformingStores/>
+          <TopPerformingStores />
         </div>
       </div>
 
       {/* ===== SECTION 3: STORE PERFORMANCE TABLE ===== */}
       <div className="row g-4 mb-4">
         <div className="col-12">
-          <Card className="shadow-sm rounded-4 border-0">
-            <CardContent>
-              <div className="d-flex align-items-center mb-2">
-                <StoreMallDirectoryIcon color="info" sx={{ mr: 1 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Store Performance Overview
-                </Typography>
-              </div>
-              <Typography variant="body2" color="text.secondary">
-                (Table placeholder) Store-wise performance metrics, revenue, and status.
-              </Typography>
-            </CardContent>
-          </Card>
+          <StorePerformanceOverview />
         </div>
       </div>
 
       {/* ===== SECTION 4: LEASING & PROPERTY ===== */}
       <div className="row g-4 mb-4">
         <div className="col-12 col-md-6">
-          <Card className="shadow-sm rounded-4 border-0 h-100">
-            <CardContent>
-              <div className="d-flex align-items-center mb-2">
-                <ApartmentIcon color="primary" sx={{ mr: 1 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Leasing Overview
-                </Typography>
-              </div>
-              <Typography variant="body2" color="text.secondary">
-                Active leases, rent due, expirations, and COI tracking.
-              </Typography>
-            </CardContent>
-          </Card>
+          <LeasingOverviewDashboard />
         </div>
         <div className="col-12 col-md-6">
-          <Card className="shadow-sm rounded-4 border-0 h-100">
-            <CardContent>
-              <div className="d-flex align-items-center mb-2">
-                <MapIcon color="success" sx={{ mr: 1 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Store Locations
-                </Typography>
-              </div>
-              <Typography variant="body2" color="text.secondary">
-                Map or visual showing store locations & markets.
-              </Typography>
-            </CardContent>
-          </Card>
+          <StoreLocationsDashboard />
         </div>
       </div>
 
       {/* ===== SECTION 5: UTILITIES & MAINTENANCE ===== */}
       <div className="row g-4 mb-4">
         <div className="col-12 col-md-6">
-          <Card className="shadow-sm rounded-4 border-0 h-100">
-            <CardContent>
-              <div className="d-flex align-items-center mb-2">
-                <SettingsIcon color="secondary" sx={{ mr: 1 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Utilities Overview
-                </Typography>
-              </div>
-              <Typography variant="body2" color="text.secondary">
-                Track bills, energy, and internet usage per store.
-              </Typography>
-            </CardContent>
-          </Card>
+          <UtilitiesOverviewDashboard />
         </div>
         <div className="col-12 col-md-6">
-          <Card className="shadow-sm rounded-4 border-0 h-100">
-            <CardContent>
-              <div className="d-flex align-items-center mb-2">
-                <BuildIcon color="warning" sx={{ mr: 1 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Maintenance Requests
-                </Typography>
-              </div>
-              <Typography variant="body2" color="text.secondary">
-                (Table placeholder) Show open and resolved maintenance tickets.
-              </Typography>
-            </CardContent>
-          </Card>
+          <MaintenanceRequestsDashboard />
         </div>
       </div>
 
       {/* ===== SECTION 6: FINANCIAL OVERVIEW ===== */}
       <div className="row g-4 mb-4">
         <div className="col-12">
-          <Card className="shadow-sm rounded-4 border-0">
-            <CardContent>
-              <div className="d-flex align-items-center mb-2">
-                <AttachMoneyIcon color="success" sx={{ mr: 1 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Financial Overview
-                </Typography>
-              </div>
-              <Typography variant="body2" color="text.secondary">
-                Overview of total revenue, profit, ROI, and expenses by market.
-              </Typography>
-            </CardContent>
-          </Card>
+          <FinancialOverviewDashboard />
         </div>
       </div>
 
       {/* ===== SECTION 7: ALERTS & QUICK ACTIONS ===== */}
       <div className="row g-4">
-        <div className="col-12 col-lg-6">
-          <Card className="shadow-sm rounded-4 border-0 h-100">
-            <CardContent>
-              <div className="d-flex align-items-center mb-2">
-                <NotificationsActiveIcon color="error" sx={{ mr: 1 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Alerts & Notifications
-                </Typography>
-              </div>
-              <Typography variant="body2" color="text.secondary">
-                Lease expirations, pending bills, and important alerts.
-              </Typography>
-            </CardContent>
-          </Card>
+        <div className="col-12 col-lg-12">
+          <AlertsNotifications />
         </div>
-        <div className="col-12 col-lg-6">
-          <Card className="shadow-sm rounded-4 border-0 h-100">
-            <CardContent>
-              <div className="d-flex align-items-center mb-2">
-                <BoltIcon color="primary" sx={{ mr: 1 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Quick Actions
-                </Typography>
-              </div>
-              <Typography variant="body2" color="text.secondary">
-                Add store, upload lease, assign employee, generate report.
-              </Typography>
-            </CardContent>
-          </Card>
-        </div>
+        {/* <div className="col-12 col-lg-6">
+          <QuickActions />
+        </div> */}
       </div>
     </Box>
   );

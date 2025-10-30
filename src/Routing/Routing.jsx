@@ -8,16 +8,22 @@ import DetailesManageStores from '../Pages/DetailesManageStores';
 import ManageUsers from '../Pages/ManageUsers';
 import ManageMarkets from '../Pages/ManageMarkets';
 import DetailesManageMarkets from '../Pages/DetailesManageMarkets';
+import Login from '../Auth/Login';
 
 
 function Routing() {
     return (
         <Router>
             <Routes>
+                <Route path="/" element={
+                    <Login />
+                    // <ProtectedRoute allowedDepartments={'Manager'}>
+                    // </ProtectedRoute>
+                } />
                 <Route path="*" element={
                     <DashboardLayouts>
                         <Routes>
-                            <Route path="/" element={
+                            <Route path="/dashboard" element={
                                 <Dashboard />
                                 // <ProtectedRoute allowedDepartments={'Manager'}>
                                 // </ProtectedRoute>

@@ -67,7 +67,7 @@ import Inventory2Icon from '@mui/icons-material/Inventory2';
 export const NAVIGATION = [
     {
         title: 'Dashboard',
-        segment: '',
+        segment: 'dashboard',
         icon: <DashboardIcon />,
         roles: ['SuperAdmin'],
     },

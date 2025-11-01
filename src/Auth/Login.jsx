@@ -354,10 +354,11 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import logo from "/logo.webp"; // 👈 apna logo path yahan lagao
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = React.useState(false);
-
+const navigate=useNavigate();
     return (
         <Box
             sx={{
@@ -487,6 +488,7 @@ export default function LoginPage() {
                                 textTransform: "none",
                                 "&:hover": { background: "linear-gradient(135deg, #ff3399, #9b33ff)" },
                             }}
+                            onClick={()=>{navigate('/dashboard')}}
                         >
                             Login
                         </Button>

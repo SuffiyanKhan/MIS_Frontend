@@ -9,6 +9,7 @@ import ManageUsers from '../Pages/ManageUsers';
 import ManageMarkets from '../Pages/ManageMarkets';
 import DetailesManageMarkets from '../Pages/DetailesManageMarkets';
 import Login from '../Auth/Login';
+import Reports from '../Pages/Reports';
 
 
 function Routing() {
@@ -50,6 +51,11 @@ function Routing() {
                             } />
                             <Route path="/detailed-markets/:id" element={
                                 <DetailesManageMarkets />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } />
+                            <Route path="/reports" element={
+                                <Reports />
                                 // <ProtectedRoute allowedDepartments={'Manager'}>
                                 // </ProtectedRoute>
                             } />

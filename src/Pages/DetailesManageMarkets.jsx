@@ -9,6 +9,7 @@ import {
   Divider,
   Card,
   CardContent,
+  IconButton,
 } from "@mui/material";
 
 // Icons
@@ -27,6 +28,7 @@ import EmployeesTab from "../Components/EmployeesTab/EmployeesTab.jsx";
 import LeasingInfoTab from "../Components/LeasingInfoTab/LeasingInfoTab.jsx";
 import FinancialsTab from "../Components/FinancialsTab/FinancialsTab.jsx";
 import DocumentsTab from "../Components/DocumentsTab/DocumentsTab.jsx";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 // Tab Panel Helper
 function TabPanel({ children, value, index }) {
@@ -43,6 +45,9 @@ export default function DetailesManageMarkets() {
 
   return (
     <Box className="container-fluid my-4 py-3">
+      <IconButton className="mb-3" onClick={() => window.history.back()}>
+        <ArrowBackIosNewIcon />
+      </IconButton>
       <MarketSummaryHeader />
       <Paper
         elevation={-3}

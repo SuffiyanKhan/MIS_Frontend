@@ -10,6 +10,15 @@ import ManageMarkets from '../Pages/ManageMarkets';
 import DetailesManageMarkets from '../Pages/DetailesManageMarkets';
 import Login from '../Auth/Login';
 import Reports from '../Pages/Reports';
+import StoresTakeOver from '../Pages/StoresTakeOver';
+import StoresTakeOverDetailed from '../Pages/StoresTakeOverDetailed';
+import ManageLeasing from '../Pages/ManageLeasing';
+import ManageLeasingDetailed from '../Pages/ManageLeasingDetailed';
+import ActivityLogs from '../Pages/ActivityLogs';
+import Notifications from '../Pages/Notifications';
+import NotificationsSplitView from '../Pages/NotificationsSplitView';
+import SettingsPage from '../Pages/SettingsPage';
+import EmployeeDetailPage from '../Pages/EmployeeDetailPage';
 
 
 function Routing() {
@@ -59,6 +68,51 @@ function Routing() {
                                 // <ProtectedRoute allowedDepartments={'Manager'}>
                                 // </ProtectedRoute>
                             } />
+                            <Route path="/store-take-over" element={
+                                <StoresTakeOver />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } />
+                            <Route path="/detailed-store-take-over/:id" element={
+                                <StoresTakeOverDetailed />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } />
+                            <Route path="/manage-leasing" element={
+                                <ManageLeasing />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } />
+                            <Route path="/detailed-leasing" element={
+                                <ManageLeasingDetailed />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } />
+                            <Route path="/activity-logs" element={
+                                <ActivityLogs />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } />
+                            <Route path="/notifications" element={
+                                <NotificationsSplitView />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } />
+                            <Route path="/setting" element={
+                                <SettingsPage />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } />
+                            <Route path="/employee-view" element={
+                                <EmployeeDetailPage />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } />
+                            {/* <Route path="/notifications" element={
+                                <Notifications />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } /> */}
                         </Routes>
                     </DashboardLayouts>
                 } />

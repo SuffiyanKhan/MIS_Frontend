@@ -29,6 +29,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import LockOpenIcon from "@mui/icons-material/LockOpen"; // ✅ For Permissions icon
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import ManagePermissionsModal from "../Components/ManagePermissionsModal/ManagePermissionsModal";
+import { useNavigate } from "react-router-dom";
 
 function ManageUsers() {
     const [search, setSearch] = useState("");
@@ -94,7 +96,9 @@ function ManageUsers() {
             avatar: "https://randomuser.me/api/portraits/women/77.jpg",
         },
     ];
-
+    const [openPermissions, setOpenPermissions] = useState(false);
+    const [activeUser, setActiveUser] = useState(null);
+    const navigate = useNavigate();
     // ===== Filtering Logic =====
     const filteredUsers = users.filter(
         (u) =>
@@ -215,7 +219,7 @@ function ManageUsers() {
                                     />
                                 </TableCell>
                                 <TableCell align="right">
-                                    <IconButton>
+                                    <IconButton onClick={() => { navigate('/employee-view'); window.scroll(0, 0) }}>
                                         <VisibilityIcon fontSize="small" color="info" />
                                     </IconButton>
                                     <IconButton onClick={(e) => handleMenuOpen(e, user)}>
@@ -248,11 +252,26 @@ function ManageUsers() {
                 <MenuItem onClick={handleMenuClose} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <EditIcon fontSize="small" color="warning" /> Edit User
                 </MenuItem>
-
+                {/* 
                 <MenuItem onClick={handleMenuClose} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <LockOpenIcon fontSize="small" color="primary" /> Manage Permissions
+                </MenuItem> */}
+                <MenuItem
+                    onClick={() => {
+                        handleMenuClose();
+                        setActiveUser(selectedUser);
+                        setOpenPermissions(true);
+                    }}
+                    sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                >
                     <LockOpenIcon fontSize="small" color="primary" /> Manage Permissions
                 </MenuItem>
 
+                <ManagePermissionsModal
+                    open={openPermissions}
+                    onClose={() => setOpenPermissions(false)}
+                    user={activeUser}
+                />
                 <Divider />
 
                 <MenuItem onClick={handleMenuClose} sx={{ display: "flex", alignItems: "center", gap: 1 }}>

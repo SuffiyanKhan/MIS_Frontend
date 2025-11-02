@@ -63,6 +63,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
+import SyncAltIcon from "@mui/icons-material/SyncAlt";
 
 export const NAVIGATION = [
     {
@@ -106,6 +107,12 @@ export const NAVIGATION = [
         segment: 'tickets',
         icon: <ConfirmationNumberIcon />,
         roles: ['SuperAdmin', 'Agent'],
+    },
+    {
+        title: 'Stores Take Over ',
+        segment: 'store-take-over',
+        icon: <SyncAltIcon />,
+        roles: ['SuperAdmin'],
     },
     {
         title: 'Support',

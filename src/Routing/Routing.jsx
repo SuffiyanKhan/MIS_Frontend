@@ -19,6 +19,7 @@ import Notifications from '../Pages/Notifications';
 import NotificationsSplitView from '../Pages/NotificationsSplitView';
 import SettingsPage from '../Pages/SettingsPage';
 import EmployeeDetailPage from '../Pages/EmployeeDetailPage';
+import TakeOverForm from '../Pages/TakeOverForm';
 
 
 function Routing() {
@@ -105,6 +106,11 @@ function Routing() {
                             } />
                             <Route path="/employee-view" element={
                                 <EmployeeDetailPage />
+                                // <ProtectedRoute allowedDepartments={'Manager'}>
+                                // </ProtectedRoute>
+                            } />
+                            <Route path="/takeoverform" element={
+                                <TakeOverForm />
                                 // <ProtectedRoute allowedDepartments={'Manager'}>
                                 // </ProtectedRoute>
                             } />

@@ -28,6 +28,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import WatchIcon from "@mui/icons-material/Watch";
 import { useNavigate } from "react-router-dom";
+import AddDevicesForStoreTakeOverForm from "../Components/AddDevicesForStoreTakeOverForm/AddDevicesForStoreTakeOverForm";
 
 const StoresTakeOver = () => {
   const [search, setSearch] = useState("");
@@ -112,6 +113,10 @@ const StoresTakeOver = () => {
             <Button variant="contained" color="secondary" startIcon={<AddIcon />}>
               Add Takeover
             </Button>
+            <AddDevicesForStoreTakeOverForm />
+            {/* <Button variant="contained" startIcon={<AddIcon />}>
+              Add Devices
+            </Button> */}
             <Button variant="outlined" color="inherit" startIcon={<RefreshIcon />}>
               Refresh
             </Button>
@@ -205,8 +210,8 @@ const StoresTakeOver = () => {
                             row.status === "Completed"
                               ? "success"
                               : row.status === "In Progress"
-                              ? "warning"
-                              : "default"
+                                ? "warning"
+                                : "default"
                           }
                           size="small"
                         />

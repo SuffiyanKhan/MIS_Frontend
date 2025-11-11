@@ -692,15 +692,18 @@ import {
     CircularProgress,
     Autocomplete,
     Paper,
+    Typography,
+    IconButton,
 } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import imageCompression from "browser-image-compression";
 import { getAllStoresDataServices } from "../Services/stores.services";
-import { addNewTakeoverStoreDataServices } from "../Services/takeoverstores.services";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { addNewTakeoverStoreDataServices, getAllTakeoverStoreDevicesData } from "../Services/takeoverstores.services";
 // ✅ Yup Schema for validation
 const validationSchema = Yup.object().shape({
-    // name: Yup.string().required("Required"),
     storeId: Yup.string().required("Please select a store"),
     storeTechId: Yup.string().required("Required"),
     takeOverDate: Yup.string().required("Required"),
@@ -724,7 +727,10 @@ function TakeOverForm() {
     const [loading, setLoading] = useState(false);
     const [allStores, setAllStores] = useState([]);
     const [isUploading, setIsUploading] = useState(false);
-
+    const [allDevices, setAllDevices] = useState([]);
+    const [selectedDevice, setSelectedDevice] = useState(null);
+    const [deviceValue, setDeviceValue] = useState("");
+    const [addedDevices, setAddedDevices] = useState([]);
     const initialValues = useMemo(
         () => ({
             // name: "",
@@ -732,7 +738,7 @@ function TakeOverForm() {
             storeTechId: "",
             cashinstore: "",
             takeOverDate: "",
-            takeoverData:"",
+            takeoverData: "",
             alarmCode: "",
             wifiName: "",
             wifiCode: "",
@@ -761,6 +767,18 @@ function TakeOverForm() {
         }
     }, []);
 
+    // ✅ Fetch takeover store devices
+    const fetchDevices = useCallback(async () => {
+        try {
+            const response = await getAllTakeoverStoreDevicesData();
+            if (response?.data) setAllDevices(response.data);
+        } catch (error) {
+            console.log("ERROR fetching devices:", error.message);
+        }
+    }, []);
+    useEffect(() => {
+        fetchDevices();
+    }, [fetchDevices])
     useEffect(() => {
         fetchStores();
     }, [fetchStores]);
@@ -797,14 +815,44 @@ function TakeOverForm() {
         setIsUploading(false);
         return uploadedUrls;
     };
+    // ✅ Add Device Handler
+    const handleAddDevice = () => {
+        if (!selectedDevice || !deviceValue.trim()) return;
 
+        const newDevice = {
+            id: selectedDevice.id,
+            deviceName: selectedDevice.deviceName,
+            deviceType: selectedDevice.deviceType,
+            value: deviceValue.trim(),
+        };
+
+        // prevent duplicate addition
+        if (addedDevices.some((d) => d.id === selectedDevice.id)) {
+            alert("This device is already added!");
+            return;
+        }
+
+        setAddedDevices([...addedDevices, newDevice]);
+        setSelectedDevice(null);
+        setDeviceValue("");
+    };
+
+    const handleRemoveDevice = (id) => {
+        setAddedDevices(addedDevices.filter((d) => d.id !== id));
+    };
     // ✅ Handle Submit
     const handleSubmit = async (values, { resetForm }) => {
         // setLoading(true);
-        console.log("🚀 Submitting Takeover Form:", values);
+        const payload = {
+            ...values,
+            devices: addedDevices, // include selected devices
+        };
+
+        console.log("🚀 Final Payload:", payload);
+        // console.log("🚀 Submitting Takeover Form:", values);
         try {
-            const response = await addNewTakeoverStoreDataServices(values);
-            console.log("RESPONSE:", response.data);
+            // const response = await addNewTakeoverStoreDataServices(values);
+            // console.log("RESPONSE:", response.data);
         } catch (error) {
             console.log("ERROR", error)
         }
@@ -812,7 +860,7 @@ function TakeOverForm() {
 
     return (
         <Paper className="container py-4 px-3 my-4" elevation={3}>
-            <h3 className="mb-4 text-center fw-bold text-primary">🏪 Store Takeover Form</h3>
+            <h3 className="mb-4 text-center fw-bold text-primary">Store Takeover Form</h3>
 
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ values, handleChange, setFieldValue, errors, touched }) => (
@@ -952,7 +1000,96 @@ function TakeOverForm() {
                                     </TextField>
                                 </div>
                             ))}
+                            {/* ✅ Device Selection Section */}
+                            <div className="col-12 mt-4">
+                                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                                    Assign Store Devices
+                                </Typography>
 
+                                <div className="row g-2 align-items-center mb-3">
+                                    <div className="col-md-5">
+                                        <Autocomplete
+                                            options={allDevices}
+                                            getOptionLabel={(option) =>
+                                                `${option.deviceName} (${option.deviceType})`
+                                            }
+                                            value={selectedDevice}
+                                            onChange={(_, newValue) => setSelectedDevice(newValue)}
+                                            renderInput={(params) => (
+                                                <TextField {...params} label="Select Device" fullWidth />
+                                            )}
+                                        />
+                                    </div>
+                                    <div className="col-md-5">
+                                        <TextField
+                                            label="Enter Device Value"
+                                            fullWidth
+                                            value={deviceValue}
+                                            onChange={(e) => setDeviceValue(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="col-md-2 text-end">
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<AddIcon />}
+                                            onClick={handleAddDevice}
+                                            disabled={!selectedDevice || !deviceValue.trim()}
+                                        >
+                                            Add
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Show added devices */}
+                            {addedDevices.length > 0 && (
+                                <Paper sx={{ p: 2, borderRadius: 2, background: "#f9f9f9" }}>
+                                    <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600 }}>
+                                        Added Devices
+                                    </Typography>
+
+                                    {/* Header Row */}
+                                    <div className="d-flex fw-bold text-secondary border-bottom pb-2 mb-2">
+                                        <div className="flex-grow-1 col-5">Device Name</div>
+                                        <div className="flex-grow-1 col-5">Entered Value</div>
+                                        <div className="col-2 text-center">Action</div>
+                                    </div>
+
+                                    {/* Device Rows */}
+                                    {addedDevices.map((d) => (
+                                        <div
+                                            key={d.id}
+                                            className="d-flex align-items-center border-bottom py-2"
+                                            style={{ fontSize: "0.9rem" }}
+                                        >
+                                            {/* Device Name & Type */}
+                                            <div className="flex-grow-1 col-5">
+                                                <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                                                    {d.deviceName}
+                                                </Typography>
+                                                <Typography variant="caption" color="text.secondary">
+                                                    {d.deviceType}
+                                                </Typography>
+                                            </div>
+
+                                            {/* Device Value */}
+                                            <div className="flex-grow-1 col-5">
+                                                <Typography variant="body2">{d.value}</Typography>
+                                            </div>
+
+                                            {/* Delete Button */}
+                                            <div className="col-2 text-center">
+                                                <IconButton
+                                                    color="error"
+                                                    onClick={() => handleRemoveDevice(d.id)}
+                                                    size="small"
+                                                >
+                                                    <DeleteIcon fontSize="small" />
+                                                </IconButton>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </Paper>
+                            )}
 
                             {/* Submit */}
                             <div className="col-12 text-end mt-4">

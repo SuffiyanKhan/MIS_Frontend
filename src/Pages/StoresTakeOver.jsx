@@ -110,7 +110,7 @@ const StoresTakeOver = () => {
           </div>
 
           <div className="col-12 col-md-4 d-flex justify-content-md-end justify-content-start gap-2 mt-3 mt-md-0">
-            <Button variant="contained" color="secondary" startIcon={<AddIcon />}>
+            <Button onClick={() => { navigate("/takeoverform"); window.scroll(0, 0) }} variant="contained" color="secondary" startIcon={<AddIcon />}>
               Add Takeover
             </Button>
             <AddDevicesForStoreTakeOverForm />

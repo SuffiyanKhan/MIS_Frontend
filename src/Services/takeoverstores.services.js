@@ -27,8 +27,18 @@ const addNewTakeoverStoreDataServices = async (payload) => {
     }
 }
 
+const getAllTakeoverStoredata=async()=>{
+    try {
+        const response = await axios('http://localhost:5001/api/StoreTakeOverForm/get-all-takeover-data');
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export {
     addNewTakeoverStoreDevices,
     addNewTakeoverStoreDataServices,
-    getAllTakeoverStoreDevicesData
+    getAllTakeoverStoreDevicesData,
+    getAllTakeoverStoredata
 }

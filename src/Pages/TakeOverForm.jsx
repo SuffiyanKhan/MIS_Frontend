@@ -731,6 +731,7 @@ function TakeOverForm() {
     const [selectedDevice, setSelectedDevice] = useState(null);
     const [deviceValue, setDeviceValue] = useState("");
     const [addedDevices, setAddedDevices] = useState([]);
+    const [addedDbDevices, setAddedDbDevices] = useState([]);
     const initialValues = useMemo(
         () => ({
             // name: "",
@@ -825,6 +826,10 @@ function TakeOverForm() {
             deviceType: selectedDevice.deviceType,
             value: deviceValue.trim(),
         };
+        const dbNewDevice = {
+            Device_ID: selectedDevice.id,
+            serial_number: deviceValue.trim(),
+        }
 
         // prevent duplicate addition
         if (addedDevices.some((d) => d.id === selectedDevice.id)) {
@@ -833,6 +838,7 @@ function TakeOverForm() {
         }
 
         setAddedDevices([...addedDevices, newDevice]);
+        setAddedDbDevices([...addedDbDevices, dbNewDevice]);
         setSelectedDevice(null);
         setDeviceValue("");
     };
@@ -843,16 +849,19 @@ function TakeOverForm() {
     // ✅ Handle Submit
     const handleSubmit = async (values, { resetForm }) => {
         // setLoading(true);
+        const addNewDevices = {
+            serial_number: addedDevices
+        }
         const payload = {
             ...values,
-            devices: addedDevices, // include selected devices
+            devices: addedDbDevices, // include selected devices
         };
 
-        console.log("🚀 Final Payload:", payload);
+        // console.log("🚀 Final Payload:", payload);
         // console.log("🚀 Submitting Takeover Form:", values);
         try {
-            // const response = await addNewTakeoverStoreDataServices(values);
-            // console.log("RESPONSE:", response.data);
+            const response = await addNewTakeoverStoreDataServices(payload);
+            console.log("RESPONSE:", response.data);
         } catch (error) {
             console.log("ERROR", error)
         }
@@ -929,7 +938,7 @@ function TakeOverForm() {
                                     fullWidth
                                     label="Cash in Store"
                                     name="cashinstore"
-                                    type="number"
+                                    type="text"
                                     value={values.cashinstore}
                                     onChange={handleChange}
                                 />
